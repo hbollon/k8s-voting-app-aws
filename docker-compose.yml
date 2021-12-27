@@ -20,6 +20,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+
   result-webapp:
     build:
       context: ./voting-app/result-webapp
@@ -37,3 +40,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
+
+volumes:
+  db-data: {}
