@@ -20,6 +20,15 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  result-webapp:
+    build:
+      context: ./voting-app/result-webapp
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
 
   worker:
     build:
