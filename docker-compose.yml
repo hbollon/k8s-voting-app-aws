@@ -1,0 +1,27 @@
+---
+version: "1.0"
+
+services:
+  redis:
+    image: redis:alpine
+    command: redis-server --requirepass password
+    ports: ["6379"]
+
+  db:
+    image: postgres:9.5
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "password"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  worker:
+    build:
+      context: ./voting-app/backend
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
