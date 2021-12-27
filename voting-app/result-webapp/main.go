@@ -72,7 +72,7 @@ func getVotesHandler(w http.ResponseWriter, r *http.Request, db *DB) {
 	}
 }
 
-func (db *DB) getVotesStats() map[int]int {
+func (db *DB) getVotesStats() []int {
 	rows, err := db.Query("SELECT vote, COUNT(id) AS count FROM votes GROUP BY vote")
 	if err != nil {
 		log.Error(err.Error())
@@ -80,7 +80,7 @@ func (db *DB) getVotesStats() map[int]int {
 	}
 	defer rows.Close()
 
-	votes := map[int]int{0: 0, 1: 0}
+	votes := []int{0, 0}
 	for rows.Next() {
 		var v vote
 		if err := rows.Scan(&v.VoterID, &v.Value); err != nil {
@@ -110,7 +110,7 @@ func main() {
 	apiRouter.HandleFunc("/votes", handleWithDB(getVotesHandler, &DB{database}))
 
 	// Serve static files (CSS, JS, images) from dir
-	fs := http.FileServer(http.Dir("./frontend/"))
+	fs := http.FileServer(http.Dir("/static"))
 	r.PathPrefix("/").Handler(fs)
 
 	// Add CORS Middleware to mux router

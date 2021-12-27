@@ -5,8 +5,16 @@ RUN go mod download
 COPY . ./
 RUN go build -v -o ./result-app
 
+FROM node:16.5-alpine3.14 as node-builder
+WORKDIR /opt/build
+COPY result-app-frontend ./result-app-frontend
+WORKDIR /opt/build/result-app-frontend
+RUN yarn install
+RUN yarn build
+
 FROM alpine:3.14
 WORKDIR /
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /opt/build/result-app /
+COPY --from=node-builder /opt/build/result-app-frontend/dist /static
 CMD ["/result-app"]
