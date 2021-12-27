@@ -95,7 +95,7 @@ func main() {
 }
 
 func (w *worker) processVote(v vote) (err error) {
-	stmt, err := w.db.Prepare("UPDATE votes SET vote = ? WHERE id = ?")
+	stmt, err := w.db.Prepare("UPDATE votes SET vote = $1 WHERE id = $2")
 	if err != nil {
 		return
 	}
