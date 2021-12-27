@@ -11,11 +11,12 @@ import (
 )
 
 const (
-	host     = "postgres"
-	port     = 5432
-	user     = "postgres"
-	password = "password"
-	dbname   = "voting-app-db"
+	host      = "db"
+	port      = 5432
+	user      = "postgres"
+	password  = "password"
+	dbname    = "voting-app-db"
+	tablename = "votes"
 )
 
 type worker struct {
@@ -33,6 +34,13 @@ func (w *worker) initConnections() (err error) {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 	w.db, err = sql.Open("postgres", psqlInfo)
+	if err != nil {
+		return
+	}
+
+	// Create default votes table if not exists
+	_, err = w.db.Exec("CREATE TABLE IF NOT EXISTS " +
+		tablename + " (id TEXT PRIMARY KEY, voter_id VARCHAR(45) NOT NULL, vote INTEGER NOT NULL)")
 	if err != nil {
 		return
 	}
@@ -76,6 +84,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+		fmt.Println(voteObj)
 
 		// Process vote in db
 		err = w.processVote(voteObj)
