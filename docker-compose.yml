@@ -33,6 +33,16 @@ services:
     ports:
       - "3000:3000"
 
+  vote-webapp:
+    build:
+      context: ./voting-app/vote-webapp
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "4000:3000"
+
   worker:
     build:
       context: ./voting-app/worker
