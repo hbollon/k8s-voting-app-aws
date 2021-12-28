@@ -40,7 +40,7 @@ func (w *worker) initConnections() (err error) {
 
 	// Create default votes table if not exists
 	_, err = w.db.Exec("CREATE TABLE IF NOT EXISTS " +
-		tablename + " (id TEXT PRIMARY KEY, voter_id VARCHAR(45) NOT NULL, vote INTEGER NOT NULL)")
+		tablename + " (id SERIAL PRIMARY KEY, voter_id VARCHAR(45) NOT NULL UNIQUE, vote INTEGER NOT NULL)")
 	if err != nil {
 		return
 	}
@@ -80,22 +80,35 @@ func main() {
 
 		// Parse first vote to struct
 		var voteObj vote
-		err = json.Unmarshal([]byte(results[0]), &voteObj)
+		err = json.Unmarshal([]byte(results[1]), &voteObj)
 		if err != nil {
 			panic(err)
 		}
 		fmt.Println(voteObj)
 
 		// Process vote in db
-		err = w.processVote(voteObj)
+		err = w.processInsertVote(voteObj)
 		if err != nil {
 			panic(err)
 		}
 	}
 }
 
-func (w *worker) processVote(v vote) (err error) {
-	stmt, err := w.db.Prepare("UPDATE votes SET vote = $1 WHERE id = $2")
+func (w *worker) processInsertVote(v vote) (err error) {
+	stmt, err := w.db.Prepare("INSERT INTO votes (voter_id, vote) VALUES ($1, $2)")
+	if err != nil {
+		return
+	}
+
+	if _, err = stmt.Exec(v.VoterID, v.Value); err != nil {
+		return w.processUpdateVote(v)
+	}
+
+	return
+}
+
+func (w *worker) processUpdateVote(v vote) (err error) {
+	stmt, err := w.db.Prepare("UPDATE votes SET vote = $1 WHERE voter_id = $2")
 	if err != nil {
 		return
 	}
