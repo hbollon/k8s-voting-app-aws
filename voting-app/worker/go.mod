@@ -1,4 +1,4 @@
-module github.com/hbollon/k8s-voting-app-aws/backend
+module github.com/hbollon/k8s-voting-app-aws/worker
 
 go 1.17
 
