@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	host      = "db"
+	host      = "postgres"
 	port      = 5432
 	user      = "postgres"
 	password  = "password"

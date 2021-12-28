@@ -7,7 +7,7 @@ services:
     command: redis-server --requirepass password
     ports: ["6379"]
 
-  db:
+  postgres:
     image: postgres:14.1
     ports:
       - "5432:5432"
