@@ -124,7 +124,7 @@ func main() {
 	r.Use(corsMiddleware)
 
 	// Start server
-	port := 3000
+	port := 80
 	log.Infof("Listening on port %d\n", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", port), r))
 }
