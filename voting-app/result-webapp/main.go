@@ -83,11 +83,12 @@ func (db *DB) getVotesStats() []int {
 	votes := []int{0, 0}
 	for rows.Next() {
 		var v vote
-		if err := rows.Scan(&v.VoterID, &v.Value); err != nil {
+		var nbVotes int
+		if err := rows.Scan(&v.Value, &nbVotes); err != nil {
 			log.Error(err.Error())
 			return nil
 		}
-		votes[v.Value] += 1
+		votes[v.Value] = nbVotes
 	}
 	return votes
 }
