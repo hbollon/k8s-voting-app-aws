@@ -28,7 +28,7 @@ services:
       context: ./voting-app/result-webapp
       dockerfile: Dockerfile
     depends_on:
-      db:
+      postgres:
         condition: service_healthy
     ports:
       - "3000:80"
@@ -38,7 +38,7 @@ services:
       context: ./voting-app/vote-webapp
       dockerfile: Dockerfile
     depends_on:
-      db:
+      postgres:
         condition: service_healthy
     ports:
       - "4000:80"
@@ -48,7 +48,7 @@ services:
       context: ./voting-app/worker
       dockerfile: Dockerfile
     depends_on:
-      db:
+      postgres:
         condition: service_healthy
 
 volumes:
