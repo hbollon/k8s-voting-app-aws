@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deploy
+  labels:
+    name:  redis-deploy
+spec:
+  replicas: 1
+  
+  selector:
+    matchLabels:
+      name: redis-pod
+      type: redis-db
+
+  template:
+    metadata:
+      labels:
+        name: redis-pod
+        type: redis-db
+    spec:
+      containers:
+      - name: redis
+        image: redis
+        args: ["--requirepass", "password"]
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 6379

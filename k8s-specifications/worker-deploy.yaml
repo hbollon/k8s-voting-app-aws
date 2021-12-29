@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-deploy
+  labels:
+    name:  worker-deploy
+spec:
+  replicas: 1
+  
+  selector:
+    matchLabels:
+      name: worker-pod
+
+  template:
+    metadata:
+      labels:
+        name: worker-pod
+    spec:
+      containers:
+      - name: worker-app
+        imagePullPolicy: Always
+        image: ghcr.io/hbollon/k8s-voting-app-aws/worker:main
+

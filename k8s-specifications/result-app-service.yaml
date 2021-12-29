@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name:  result-app-service
+  labels:
+    name: result-app-service
+spec:
+  type:  ClusterIP
+  selector:
+    name: result-app-pod
+    type: frontend
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http

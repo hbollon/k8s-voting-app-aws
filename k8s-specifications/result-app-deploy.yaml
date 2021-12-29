@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: result-app-deploy
+  labels:
+    name:  result-app-deploy
+spec:
+  replicas: 2
+  
+  selector:
+    matchLabels:
+      name: result-app-pod
+      type: frontend
+
+  template:
+    metadata:
+      labels:
+        name: result-app-pod
+        type: frontend
+    spec:
+      containers:
+      - name: result-app-pod
+        imagePullPolicy: Always
+        image: ghcr.io/hbollon/k8s-voting-app-aws/result-app:main
+        ports:
+        - containerPort: 80

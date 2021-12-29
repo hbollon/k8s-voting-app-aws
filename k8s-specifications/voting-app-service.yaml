@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name:  voting-app-service
+  labels:
+    name: voting-app-service
+spec:
+  type:  ClusterIP
+  selector:
+    name: voting-app-pod
+    type: frontend
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
