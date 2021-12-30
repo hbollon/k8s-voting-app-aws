@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-deploy
+  labels:
+    {{- include "voting-app.labels" . | nindent 4 }}
+    {{- with .Values.worker.labels }}
+    {{ toYaml . }}
+    {{- end }}
+spec:
+  replicas: {{ .Values.worker.replicas }}
+  selector:
+    matchLabels:
+      name: worker-pod
+
+  template:
+    metadata:
+      labels:
+        name: worker-pod
+    spec:
+      containers:
+      - name: worker-app
+        image: {{ .Values.worker.image }}
+        imagePullPolicy: {{ .Values.worker.imagePullPolicy }}
+        env:
+        {{- with .Values.worker.env }}
+        {{ toYaml . | nindent 8 }}
+        {{- end }}
+

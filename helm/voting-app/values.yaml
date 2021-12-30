@@ -1,0 +1,107 @@
+# Redis helm settings
+redis:
+  image:
+    debug: true
+  global:
+    redis:
+      password: password
+  architecture: standalone
+  
+# Postgres helm settings
+postgresql:
+  postgresqlUsername: postgres
+  postgresqlPassword: password
+  postgresqlDatabase: voting-app-db
+
+worker:
+  replicas: 1
+  image: ghcr.io/hbollon/k8s-voting-app-aws/worker:main
+  imagePullPolicy: Always
+  env:
+  - name: POSTGRES_HOST
+    value: "voting-app-postgresql"
+  - name: REDIS_HOST
+    value: "voting-app-redis-master"
+  labels:
+    name:  worker-deploy
+
+votingapp:
+  deploy:
+    replicas: 3
+    labels:
+      name: voting-app-deploy
+    template:
+      metadata:
+        labels:
+          name: voting-app-pod
+          type: frontend
+      spec:
+        containers:
+        - name: voting-app-pod
+          image: ghcr.io/hbollon/k8s-voting-app-aws/vote-app:main
+          imagePullPolicy: Always
+          env:
+          - name: REDIS_HOST
+            value: "voting-app-redis-master"
+          ports:
+          - containerPort: 80
+  service:
+    labels:
+      name: voting-app-service
+    ports:
+    - port:  80
+      targetPort:  80
+
+resultapp:
+  deploy:
+    replicas: 3
+    labels:
+      name: result-app-deploy
+    template:
+      metadata:
+        labels:
+          name: result-app-pod
+          type: frontend
+      spec:
+        containers:
+        - name: result-app-pod
+          image: ghcr.io/hbollon/k8s-voting-app-aws/result-app:main
+          imagePullPolicy: Always
+          env:
+          - name: POSTGRES_HOST
+            value: "voting-app-postgresql"
+          ports:
+          - containerPort: 80
+  service:
+    labels:
+      name: result-app-service
+    ports:
+    - port:  80
+      targetPort:  80
+
+appingress:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  labels: 
+    name: voting-appingress
+  rules:
+  - host: result.votingapp.com
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: result-app-service
+              port:
+                number: 80
+  - host: vote.votingapp.com
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: voting-app-service
+              port:
+                number: 80

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: result-app-deploy
+  labels:
+    {{- include "voting-app.labels" . | nindent 4 }}
+    {{- with .Values.resultapp.deploy.labels }}
+    {{ toYaml . }}
+    {{- end }}
+spec:
+  replicas: {{ .Values.resultapp.deploy.replicas }}
+  selector:
+    matchLabels:
+      name: result-app-pod
+      type: frontend
+  template:
+  {{- with .Values.resultapp.deploy.template }}
+  {{ toYaml . | nindent 4 }}
+  {{- end }}
