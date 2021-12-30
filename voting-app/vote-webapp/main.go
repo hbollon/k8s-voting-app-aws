@@ -19,13 +19,13 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const (
-	host     = "db"
-	port     = 5432
-	user     = "postgres"
-	password = "password"
-	dbname   = "voting-app-db"
-)
+var host = "redis"
+
+func init() {
+	if os.Getenv("REDIS_HOST") != "" {
+		host = os.Getenv("REDIS_HOST")
+	}
+}
 
 var randGenerator = rand.New(rand.NewSource(time.Now().UnixNano()))
 
@@ -106,7 +106,7 @@ func (red *Redis) submitVote(voteData []byte) (err error) {
 func main() {
 	// Set up the Redis connection
 	red := redis.NewClient(&redis.Options{
-		Addr:     "redis:6379",
+		Addr:     fmt.Sprintf("%s:6379", host),
 		Password: "password",
 		DB:       0, // use default DB
 	})

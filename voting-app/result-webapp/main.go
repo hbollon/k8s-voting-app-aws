@@ -14,13 +14,21 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+var host = "postgres"
+
 const (
-	host     = "postgres"
-	port     = 5432
-	user     = "postgres"
-	password = "password"
-	dbname   = "voting-app-db"
+	port      = 5432
+	user      = "postgres"
+	password  = "password"
+	dbname    = "voting-app-db"
+	tablename = "votes"
 )
+
+func init() {
+	if os.Getenv("POSTGRES_HOST") != "" {
+		host = os.Getenv("POSTGRES_HOST")
+	}
+}
 
 type DB struct {
 	*sql.DB

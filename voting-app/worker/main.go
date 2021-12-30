@@ -5,19 +5,33 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/go-redis/redis/v8"
 	_ "github.com/lib/pq"
 )
 
+var (
+	hostPostgres = "postgres"
+	hostRedis    = "redis"
+)
+
 const (
-	host      = "postgres"
 	port      = 5432
 	user      = "postgres"
 	password  = "password"
 	dbname    = "voting-app-db"
 	tablename = "votes"
 )
+
+func init() {
+	if os.Getenv("POSTGRES_HOST") != "" {
+		hostPostgres = os.Getenv("POSTGRES_HOST")
+	}
+	if os.Getenv("REDIS_HOST") != "" {
+		hostRedis = os.Getenv("REDIS_HOST")
+	}
+}
 
 type worker struct {
 	db    *sql.DB
@@ -32,7 +46,7 @@ type vote struct {
 func (w *worker) initConnections() (err error) {
 	// Init Postgresql connection
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
+		hostPostgres, port, user, password, dbname)
 	w.db, err = sql.Open("postgres", psqlInfo)
 	if err != nil {
 		return
@@ -47,7 +61,7 @@ func (w *worker) initConnections() (err error) {
 
 	// Init Redis connection
 	w.redis = redis.NewClient(&redis.Options{
-		Addr:     "redis:6379",
+		Addr:     fmt.Sprintf("%s:6379", hostRedis),
 		Password: "password",
 		DB:       0, // use default DB
 	})
