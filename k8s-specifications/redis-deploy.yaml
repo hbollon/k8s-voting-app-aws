@@ -29,3 +29,10 @@ spec:
             cpu: "100m"
         ports:
         - containerPort: 6379
+        volumeMounts:
+        - mountPath: /var/lib/redis/data
+          name: redis-pv-claim
+      volumes:
+      - name: redis-pv-claim
+        persistentVolumeClaim:
+          claimName: redis-pv-claim
