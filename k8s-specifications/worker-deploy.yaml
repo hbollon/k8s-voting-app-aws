@@ -20,4 +20,8 @@ spec:
       - name: worker-app
         imagePullPolicy: Always
         image: ghcr.io/hbollon/k8s-voting-app-aws/worker:main
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
 

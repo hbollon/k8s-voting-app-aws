@@ -24,3 +24,7 @@ spec:
         image: ghcr.io/hbollon/k8s-voting-app-aws/result-app:main
         ports:
         - containerPort: 80
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "50m"

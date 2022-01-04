@@ -24,6 +24,10 @@ worker:
     value: "voting-app-redis-master"
   labels:
     name:  worker-deploy
+  resources:
+    limits:
+      memory: "128Mi"
+      cpu: "100m"
 
 votingapp:
   deploy:
@@ -45,6 +49,10 @@ votingapp:
             value: "voting-app-redis-master"
           ports:
           - containerPort: 80
+          resources:
+            limits:
+              memory: "64Mi"
+              cpu: "50m"
   service:
     labels:
       name: voting-app-service
@@ -72,6 +80,10 @@ resultapp:
             value: "voting-app-postgresql"
           ports:
           - containerPort: 80
+          resources:
+            limits:
+              memory: "64Mi"
+              cpu: "50m"
   service:
     labels:
       name: result-app-service

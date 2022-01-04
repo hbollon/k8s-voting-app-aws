@@ -26,4 +26,8 @@ spec:
         {{- with .Values.worker.env }}
         {{ toYaml . | nindent 8 }}
         {{- end }}
+        resources:
+        {{- with .Values.worker.resources }}
+        {{ toYaml . | nindent 10 }}
+        {{- end }}
 
