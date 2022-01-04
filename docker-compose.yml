@@ -31,7 +31,7 @@ services:
       postgres:
         condition: service_healthy
     ports:
-      - "3000:80"
+      - "9091:80"
 
   vote-webapp:
     build:
@@ -41,7 +41,7 @@ services:
       postgres:
         condition: service_healthy
     ports:
-      - "4000:80"
+      - "9090:80"
 
   worker:
     build:

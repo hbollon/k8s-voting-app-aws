@@ -40,7 +40,7 @@ This repository provide a complete and modern ready to deploy example of a docke
 3. Open a terminal inside the cloned repository folder and build Docker images: `docker-compose build`
 4. Start all services: `docker-compose up -d`
 
-The result app should be now accessible through `localhost:3000` and the vote one to `localhost:4000`
+The result app should be now accessible through `localhost:9091` and the vote one to `localhost:9090`
 To stop all deployed ressources run: `docker-compose down`
 
 ### Run with Kubernetes
