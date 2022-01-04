@@ -38,6 +38,30 @@ spec:
         ports:
         - containerPort: 5432
           name: postgres
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - exec pg_isready -U "postgres" -h 127.0.0.1 -p 5432
+          failureThreshold: 6
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - -e
+            - PGPASSWORD=password
+            - exec psql -U "postgres" -d "voting-app-db" -p 5432 -c "SELECT 1"
+          failureThreshold: 6
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
         volumeMounts:
         - mountPath: /var/lib/postgresql/data
           name: postgres-pv-claim
