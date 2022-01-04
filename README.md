@@ -56,7 +56,7 @@ Before deploying the app, you must install Minikube and start a cluster:
 
 ##### Using k8s templates
 
-1. Deploy all k8s ressources: `kubectl apply -f k8s-specifications`
+1. Deploy all k8s ressources: `kubectl apply -f k8s-specifications --namespace=voting-app-stack`
 2. Get your cluster IP using: `minikube ip`
 3. Enable ingress access:
    - **On Linux:** Edit your hosts file located at `/etc/hosts` by adding `<minikube ip> result.votingapp.com vote.votingapp.com` to the end of it, of course replace `<minikube ip>` by the real cluster ip.
@@ -64,7 +64,7 @@ Before deploying the app, you must install Minikube and start a cluster:
    After that, start a Minikube tunnel: `minikube tunnel`
 
 The result app should be now accessible through `result.votingapp.com` and the vote one to `vote.votingapp.com`
-To stop and destroy all k8s deployed ressources run: `kubectl delete -f k8s-specifications` and stop minikube using `minikube stop`
+To stop and destroy all k8s deployed ressources run: `kubectl delete -f k8s-specifications --namespace=voting-app-stack` and stop minikube using `minikube stop`
 
 ##### Using Helm Chart
 
