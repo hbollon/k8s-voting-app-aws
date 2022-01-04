@@ -1,0 +1,41 @@
+---
+version: "1.0"
+
+services:
+  redis:
+    image: redis:alpine
+    command: redis-server --requirepass password
+    ports: ["6379"]
+
+  postgres:
+    image: postgres:14.1
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: voting-app-db
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+
+  result-webapp:
+    build:
+      context: ./voting-app/result-webapp
+      dockerfile: Dockerfile
+    ports:
+      - "9091:80"
+
+  vote-webapp:
+    build:
+      context: ./voting-app/vote-webapp
+      dockerfile: Dockerfile
+    ports:
+      - "9090:80"
+
+  worker:
+    build:
+      context: ./voting-app/worker
+      dockerfile: Dockerfile
+
+volumes:
+  db-data: {}
