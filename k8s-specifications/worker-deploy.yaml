@@ -17,6 +17,17 @@ spec:
       labels:
         name: worker-pod
     spec:
+      initContainers:
+      - name: waiting-for-postgres
+        image: postgres:latest
+        command: ['sh', '-c', 
+          'until pg_isready -h postgres -p 5432; 
+          do echo waiting for database; sleep 2; done;']
+      - name: waiting-for-redis
+        image: redis:latest
+        command: ['sh', '-c', 
+          'until redis-cli -h redis -p 6379; 
+          do echo waiting for redis; sleep 2; done;']
       containers:
       - name: worker-app
         imagePullPolicy: Always
