@@ -2,10 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: result-app-deploy
+  namespace: voting-app-stack
   labels:
     name:  result-app-deploy
 spec:
-  replicas: 2
+  replicas: 3
   
   selector:
     matchLabels:

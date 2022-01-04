@@ -1,3 +1,6 @@
+global:
+  namespace: voting-app-stack
+
 # Redis helm settings
 redis:
   image:

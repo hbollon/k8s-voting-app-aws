@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name:  postgres
+  namespace: voting-app-stack
   labels:
     name: postgres-service
 spec:

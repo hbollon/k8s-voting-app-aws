@@ -69,7 +69,7 @@ To stop and destroy all k8s deployed ressources run: `kubectl delete -f k8s-spec
 ##### Using Helm Chart
 
 1. Update Helm repositories and download dependencies: `helm dependency update ./helm/voting-app`
-2. Deploy the Helm Chart: `helm template voting-app ./helm/voting-app | kubectl apply -f -`
+2. Deploy the Helm Chart: `helm template voting-app ./helm/voting-app --namespace=voting-app-stack | kubectl apply -f -`
 3. Get your cluster IP using: `minikube ip`
 4. Enable ingress access:
    - **On Linux:** Edit your hosts file located at `/etc/hosts` by adding `<minikube ip> result.votingapp.com vote.votingapp.com` to the end of it, of course replace `<minikube ip>` by the real cluster ip.
@@ -77,7 +77,7 @@ To stop and destroy all k8s deployed ressources run: `kubectl delete -f k8s-spec
    After that, start a Minikube tunnel: `minikube tunnel`
 
 The result app should be now accessible through `result.votingapp.com` and the vote one to `vote.votingapp.com`
-To stop and destroy all k8s deployed ressources run: `helm template voting-app ./helm/voting-app | kubectl delete -f -` and stop minikube using `minikube stop`
+To stop and destroy all k8s deployed ressources run: `helm template voting-app ./helm/voting-app --namespace=voting-app-stack | kubectl delete -f -` and stop minikube using `minikube stop`
 
 ## 🤝 Contributing
 

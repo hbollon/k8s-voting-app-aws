@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: worker-deploy
+  namespace: {{ .Values.global.namespace }}
   labels:
     {{- include "voting-app.labels" . | nindent 4 }}
     {{- with .Values.worker.labels }}

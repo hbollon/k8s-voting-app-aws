@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis-deploy
+  namespace: voting-app-stack
   labels:
     name:  redis-deploy
 spec:

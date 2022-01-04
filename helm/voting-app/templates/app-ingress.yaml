@@ -2,6 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: appingress
+  namespace: {{ .Values.global.namespace }}
   labels:
     {{- include "voting-app.labels" . | nindent 4 }}
     {{- with .Values.appingress.labels }}
