@@ -12,6 +12,7 @@
 
 - [Presentation](#presentation)
   - [Architecture](#architecture)
+  - [Project structure](#project-structure)
 - [Getting Started](#getting-started)
   - [Run with Docker Compose](#run-with-docker-compose)
   - [Run with Kubernetes](#run-with-kubernetes)
@@ -31,6 +32,22 @@ Ce repository fournit un exemple complet, moderne et prêt à être déployer d'
 ### Architecture
 
 ![App's architecture scheme](app-architecture.jpg)
+
+### Project structure
+
+```bash
+k8s-voting-app-aws/
+├─ .github/ # Github workflows
+├─ docs/
+│  ├─ app-architecture.jpg # App's architcture scheme
+│  ├─ README-FR.md # French translation of the readme
+├─ helm/ # Helm Chart definitions
+├─ k8s-specifications/ # K8s Templates files
+├─ voting-app/ # Result, Vote and Worker source code 
+├─ *.tf # terraform specs files
+├─ *.tfvars # terraform values files
+├─ *.yml # docker-compose files
+```
 
 ## Getting Started
 
