@@ -20,6 +20,7 @@
       - [Using k8s templates](#using-k8s-templates)
       - [Using Helm Chart](#using-helm-chart)
     - [AWS](#aws)
+- [Roadmap](#roadmap)
 - [Contributing](#-contributing)
 - [Author](#author)
 - [Show your support](#show-your-support)
@@ -134,6 +135,15 @@ You have the possibility to get the aws endpoint linked to your EKS cluster by r
 You can destroy everything just by running this command: `terraform destroy -var-file=values.tfvars`
 
 **Never delete the generated .tfstate file when the infrastucture is deployed!** Without it you will be unable to delete all the AWS ressources with Terraform and you will be forced to do it manually with the Web AWS Console or the AWS-CLI.
+
+## Roadmap
+
+Many additional features are coming, including:
+
+- Ingress compatibility with AWS and domain customization
+- Monitoring/Alerting/Dashboarding using kube-prometheus-stack
+- Style webapps with CSS
+- And many more to come !
 
 ## 🤝 Contributing
 
